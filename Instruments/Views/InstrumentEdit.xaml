@@ -1,0 +1,398 @@
+﻿<UserControl x:Class="Instruments.Views.InstrumentEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Instruments.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:con="clr-namespace:Infrastructure.Converters;assembly=Infrastructure"
+             xmlns:bhv="clr-namespace:Controls.Behaviours;assembly=Controls"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="700">
+    <UserControl.Resources>
+        <con:BooleanNegationConverter x:Key="BooleanNegationConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="150" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="0">
+            <Button Content="Modifica"
+                    Command="{Binding StartEditCommand}"
+                    Margin="5" />
+            <Button Content="Salva"
+                    Command="{Binding SaveCommand}"
+                    Margin="5" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+
+                <Label Content="Codice:"
+                       Grid.Column="0"
+                       Grid.Row="0"
+                       Margin="5" />
+
+                <TextBox Text="{Binding InstrumentCode}"
+                         IsEnabled="{Binding EditMode}"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Grid.Column="1"
+                         Grid.Row="0"
+                         Margin="5" />
+
+                <Label Content="Tipo:"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Margin="5" />
+
+                <ComboBox ItemsSource="{Binding InstrumentTypeList}"
+                          SelectedItem="{Binding InstrumentType, Mode=TwoWay}"
+                          DisplayMemberPath="Name"
+                          IsEnabled="{Binding EditMode}"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="5" />
+
+                <Label Content="Descrizione:"
+                       Grid.Column="0"
+                       Grid.Row="2"
+                       Margin="5" />
+
+                <TextBox Text="{Binding InstrumentDescription}"
+                         MaxLength="45"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         IsEnabled="{Binding EditMode}"
+                         Grid.Column="1"
+                         Grid.Row="2"
+                         Margin="5" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Content="Costruttore:"
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Margin="5" />
+
+                <ComboBox ItemsSource="{Binding ManufacturerList}"
+                          SelectedItem="{Binding InstrumentManufacturer, Mode=TwoWay}"
+                          DisplayMemberPath="Name"
+                          IsEnabled="{Binding EditMode}"
+                          Grid.Column="1"
+                          Grid.Row="0"
+                          Margin="5" />
+
+                <Label Content="Modello:"
+                       Grid.Column="0"
+                       Grid.Row="1"
+                       Margin="5" />
+
+                <TextBox Text="{Binding InstrumentModel}"
+                         IsEnabled="{Binding EditMode}"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         Margin="5" />
+
+                <Label Content="N° di serie:"
+                   Grid.Column="0"
+                   Grid.Row="2"
+                   Margin="5" />
+
+                <TextBox Text="{Binding InstrumentSerialNumber}"
+                         IsEnabled="{Binding EditMode}"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         Grid.Column="1"
+                         Grid.Row="2"
+                         Margin="5" />
+
+                <Label Content="Area d'uso:"
+                       Grid.Column="0"
+                       Grid.Row="3"
+                       VerticalAlignment="Center"
+                       Margin="5" />
+
+                <ComboBox ItemsSource="{Binding AreaList}"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedArea}"
+                          IsEnabled="{Binding EditMode}"
+                          Grid.Column="1"
+                          Grid.Row="3"
+                          Margin="5" />
+            </Grid>
+        </Grid>
+
+        <TabControl Grid.Row="2">
+            <TabItem Header="Tarature">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="0">
+                            <Button Content="Nuova"
+                                    Command="{Binding AddCalibrationCommand}"
+                                    Margin="5" 
+                                    Width="50"/>
+                            <Button Content="Elimina"
+                                    Command="{Binding DeleteCalibrationCommand}"
+                                    Margin="5"
+                                    Width="50"/>
+                        </StackPanel>
+
+                        <ListView ItemsSource="{Binding CalibrationReportList}"
+                                  SelectedItem="{Binding SelectedCalibration, Mode=TwoWay}"
+                                  Grid.Row="1">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Report">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Year}" />
+                                                    <Run Text="{Binding Number, StringFormat=D3}" />
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Data"
+                                                    DisplayMemberBinding="{Binding Date,
+                                                                                   StringFormat=d,
+                                                                                   ConverterCulture=it-IT}" />
+                                    <GridViewColumn Header="Ente"
+                                                    DisplayMemberBinding="{Binding Laboratory.Name}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                    <ContentControl prism:RegionManager.RegionName="{Binding InstrumentEditCalibrationEditRegionName}"
+                                    Grid.Column="1" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Manutenzione">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListView ItemsSource="{Binding MaintenanceEventList}"
+                              SelectedItem="{Binding SelectedEvent}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Descrizione"
+                                                DisplayMemberBinding="{Binding Description}" />
+                                <GridViewColumn Header="Data"
+                                                DisplayMemberBinding="{Binding Date, StringFormat=d}" />
+                                <GridViewColumn Header="Tecnico"
+                                                DisplayMemberBinding="{Binding Person.Name}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Orientation="Vertical"
+                                Grid.Column="1">
+                        <Button Content="Nuova"
+                                Command="{Binding AddMaintenanceEventCommand}"
+                                Margin="5" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Documenti">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListView ItemsSource="{Binding FileList}"
+                              SelectedItem="{Binding SelectedFile}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Percorso"
+                                                DisplayMemberBinding="{Binding Path}" />
+                                <GridViewColumn Header="Descrizione"
+                                                DisplayMemberBinding="{Binding Description}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Orientation="Vertical"
+                                Grid.Column="1">
+                        <Button Content="Aggiungi"
+                                Command="{Binding AddFileCommand}"
+                                Margin="5" />
+                        <Button Content="Apri"
+                                Command="{Binding OpenFileCommand}"
+                                Margin="5" />
+                        <Button Content="Rimuovi"
+                                Command="{Binding RemoveFileCommand}"
+                                Margin="5" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Caratteristiche">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MaxWidth="300" />
+                        <ColumnDefinition MaxWidth="300" />
+                        <ColumnDefinition MaxWidth="400" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <CheckBox IsChecked="{Binding IsInService}"
+                              IsEnabled="{Binding EditMode}"
+                              Content="In Servizio"
+                              Grid.Row="0"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Left"
+                              Margin="5" />
+
+                    <CheckBox IsChecked="{Binding IsUnderControl}"
+                              IsEnabled="{Binding EditMode}"
+                              Content="Sotto controllo metrologico"
+                              Grid.Row="1"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Left"
+                              Margin="5" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Intervallo di controllo:"
+                                   Margin="5" />
+                        <TextBox Text="{Binding CalibrationInterval,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding EditMode}"
+                                 Width="30"
+                                 Margin="5" />
+                        <TextBlock Text="mesi"
+                                   Margin="5" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Responsabile controllo:"
+                                   Margin="5" />
+                        <ComboBox ItemsSource="{Binding CalibrationLabList}"
+                                  SelectedItem="{Binding SelectedCalibrationLab}"
+                                  IsEnabled="{Binding EditMode}"
+                                  DisplayMemberPath="Name"
+                                  Width="150"
+                                  Margin="5" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="0"
+                                Grid.Row="2">
+                        <TextBlock Text="Ultimo controllo:"
+                                   Margin="5" />
+                        <TextBlock Text="{Binding LastCalibrationDate,
+                                                  Mode=OneWay,
+                                                  StringFormat=d,
+                                                  ConverterCulture=it-IT,
+                                                  FallbackValue=Mai}"
+                                   Margin="5" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="2">
+                        <TextBlock Text="Prossimo controllo:"
+                                   Margin="5" />
+                        <TextBlock Text="{Binding CalibrationDueDate,
+                                                  Mode=OneWay,
+                                                  StringFormat=d,
+                                                  ConverterCulture=it-IT,
+                                                  FallbackValue=Non Previsto}"
+                                   Margin="5" />
+                    </StackPanel>
+
+                    <GroupBox Header="Proprietà"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="4"
+                              Grid.Row="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid ItemsSource="{Binding PropertyList}"
+                                  IsReadOnly="{Binding EditMode, Converter={StaticResource BooleanNegationConverter}}"
+                                  AutoGenerateColumns="False"
+                                  Background="White"
+                                  VerticalGridLinesBrush="Transparent"
+                                      Margin="2">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Nome"
+                                                    Binding="{Binding Name}" />
+                                    <DataGridTextColumn Header="Valore"
+                                                    Binding="{Binding Value}" />
+                                    <DataGridTextColumn Header="Valore Teorico"
+                                                    Binding="{Binding TargetValue}" />
+                                    <DataGridTextColumn Header="Limite Superiore"
+                                                    Binding="{Binding UpperLimit}" />
+                                    <DataGridTextColumn Header="Limite Inferiore"
+                                                    Binding="{Binding LowerLimit}" />
+                                    <DataGridTextColumn Header="UM"
+                                                    Binding="{Binding UM}" />
+                                    <DataGridCheckBoxColumn Header="Soggetta a controllo"
+                                                        Binding="{Binding IsCalibrationProperty}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <lvc:CartesianChart Grid.Column="1"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

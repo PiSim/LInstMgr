@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:Class="Infrastructure.Resources.CommonResourceDictionary"
+                    xmlns:local="clr-namespace:Infrastructure.Resources">
+
+    <BitmapImage x:Key="VulcaLogo"
+                UriSource="vulca_logo.jpg" />
+
+    <BitmapImage x:Key="PlusIcon"
+                UriSource="Plus_icon.ico" />
+
+    <BitmapImage x:Key="DatasheetIcon"
+                UriSource="Datasheet_icon.png" />
+
+    <BitmapImage x:Key="PdfIcon"
+                UriSource="pdf_icon.png" />
+
+    <BitmapImage x:Key="PdfIconSmall"
+                UriSource="pdf_icon_small.png" />
+</ResourceDictionary>
